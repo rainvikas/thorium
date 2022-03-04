@@ -43,6 +43,20 @@ const getAllBookAuthorPublisher = async function(req, res) {
     res.send({data: booksAuthorPublisher})
 }
 
+const books= async function (req,res) {
+    let PublisherDetail = await newPublisherModel.find({name:{$in:["Penguin","HarperCollins"]}})
+    let publisherId=PublisherDetail.map(ele=>ele._id)
+    await newBookModel.updateMany({ publisher: { $in:publisherId }},{isHardCover:true},{new:true});
 
+    let ratedAuthor= await newAuthorModel.find({rating:{$gt:3.5}})
+    let authorId=ratedAuthor.map(ele=>ele._id)
+    
+    await newBookModel.updateMany({author:{$in:authorId}},{$inc:{price:10}})
+    
+   let UpdatedBookModel= await newBookModel.find()
+   
+   res.send({data: UpdatedBookModel})
+}
 module.exports.createNewBook = createNewBook
 module.exports.getAllBookAuthorPublisher= getAllBookAuthorPublisher
+module.exports.books = books
