@@ -19,6 +19,7 @@ router.delete('/users/:userId',midd.middleware,userController.deletedUser)
 
 router.post("/users/:userId/posts",midd.middleware,userController.postMessage)
 
+
 module.exports = router;
 
 
